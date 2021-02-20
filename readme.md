@@ -8,25 +8,25 @@ all the specific instrumentation code, this will insert the trace spans into the
 ## Installation
 
 ```bash
-$ go install github.com/skirmish/instrument/instrument
+$ go install github.com/skirmish/instrument/instrument-otel
 ```
 
 ## Compiling an example using it.
 
-Hello World example
+Hello World example (using windows, for non windows binaries, drop the .exe)
 
 ```bash
-$ go build -o hello.exe -a -toolexec instrument ./testdata/hello/.
+$ go build -o hello.exe -a -toolexec instrument-otel ./testdata/hello/.
 ```
 
 Another build example.
 
 ```bash
-$ go build -o shello.exe -a -toolexec instrument ./testdata/smallhello/.
+$ go build -o shello.exe -a -toolexec instrument-otel ./testdata/smallhello/.
 ```
 
 And another.
 
 ```bash
-$ go build -o fib.exe -a -toolexec instrument ./testdata/fibonacci/.
+$ go build -o fib.exe -a -toolexec instrument-otel ./testdata/fibonacci/.
 ```
