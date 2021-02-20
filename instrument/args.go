@@ -39,6 +39,11 @@ package main
 //		testdata\hello\main.go
 
 type Build struct {
-	args  []string
-	files []string
+	program string
+	args    []string
+	files   []string
+}
+
+func parseArgs(args []string) (*Build, error) {
+	return nil, nil
 }

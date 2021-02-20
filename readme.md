@@ -25,6 +25,8 @@ Another build example.
 $ go build -o shello.exe -a -toolexec instrument ./testdata/smallhello/.
 ```
 
+And another.
+
 ```bash
 $ go build -o fib.exe -a -toolexec instrument ./testdata/fibonacci/.
 ```

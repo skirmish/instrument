@@ -1,3 +1,4 @@
+// Fibonacci example
 package main
 
 import (
