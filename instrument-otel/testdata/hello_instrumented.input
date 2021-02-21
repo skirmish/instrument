@@ -1,0 +1,48 @@
+// Hello world
+package main
+
+import (
+	"context"
+	"fmt"
+	"go.opentelemetry.io/otel"
+	"go.opentelemetry.io/otel/exporters/stdout"
+	sdktrace "go.opentelemetry.io/otel/sdk/trace"
+	"go.opentelemetry.io/otel/trace"
+	"log"
+)
+
+func main() {
+	// initialize trace provider.
+	initTracer()
+	// Create a named tracer with package path as its name.
+	tracer := tp.Tracer("example/hello_instrumented/main")
+	ctx := context.Background()
+	defer func() { _ = tp.Shutdown(ctx) }()
+
+	var span trace.Span
+	ctx, span = tracer.Start(ctx, "main")
+	defer span.End()
+	fmt.Println("Hello me")
+}
+
+var tp *sdktrace.TracerProvider
+
+// initTracer creates and registers trace provider instance.
+func initTracer() {
+	var err error
+	exp, err := stdout.NewExporter(stdout.WithPrettyPrint())
+	if err != nil {
+		log.Panicf("failed to initialize stdout exporter %v\n", err)
+		return
+	}
+	bsp := sdktrace.NewBatchSpanProcessor(exp)
+	tp = sdktrace.NewTracerProvider(
+		sdktrace.WithConfig(
+			sdktrace.Config{
+				DefaultSampler: sdktrace.AlwaysSample(),
+			},
+		),
+		sdktrace.WithSpanProcessor(bsp),
+	)
+	otel.SetTracerProvider(tp)
+}
