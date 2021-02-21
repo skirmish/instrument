@@ -20,7 +20,7 @@ var argTests = []struct {
 			"-std",
 			"-buildid", "JttlkUAjQvxzpPTPE4ew/JttlkUAjQvxzpPTPE4ew",
 			"-goversion", "go1.14.2",
-			"-D",
+			"-D", "",
 			"-importcfg", "$WORK\\b026\\importcfg",
 			"-pack",
 			"-c=4",
@@ -46,7 +46,7 @@ var argTests = []struct {
 				"-std",
 				"-buildid JttlkUAjQvxzpPTPE4ew/JttlkUAjQvxzpPTPE4ew",
 				"-goversion go1.14.2",
-				"-D",
+				"-D ",
 				"-importcfg $WORK\\b026\\importcfg",
 				"-pack",
 				"-c=4",
@@ -77,7 +77,7 @@ func Test_Args1(t *testing.T) {
 				t.Fatal(err)
 			}
 			if !reflect.DeepEqual(tc.outBuild, got) {
-				t.Fatalf("expected: %#v\n got: %#v", tc.outBuild, got)
+				t.Fatalf("\n expected: %#v\n got: %#v", tc.outBuild, got)
 			}
 		})
 	}

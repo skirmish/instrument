@@ -2,6 +2,8 @@
 
 package main
 
+import "strings"
+
 //
 // Examples:
 //  C:\Go\pkg\tool\windows_amd64\compile.exe
@@ -44,6 +46,56 @@ type Build struct {
 	files   []string
 }
 
+// isOpt determines if the current item is a flag or not.
+func isOption(this string, next string) (int, bool) {
+	switch {
+	case this[0] == '-' && strings.Contains(this[1:], "="): // -flag=val
+		//kv := strings.SplitN(this[1:],"=",2)
+		return 1, true
+		break
+	case this[0] == '-' && ((len(next) > 0 && next[0] != '-') || len(next) == 0): // -flag value
+		return 2, true
+		break
+	case this[0] == '-': // -flag
+		return 1, true
+		break
+	default:
+		return 1, false
+		break
+	}
+	return 1, false
+}
+
+// Parse the arguments into a Build object which we can then work with.
 func parseArgs(args []string) (*Build, error) {
-	return nil, nil
+	b := &Build{}
+
+	b.program = args[0]
+
+	// Go through all the arguments, skipping the first as it is the program to invoke
+	i := 1
+	for i < len(args)-1 {
+		inc, isOpt := isOption(args[i], args[i+1])
+		if isOpt {
+			if inc == 1 {
+				b.args = append(b.args, args[i])
+			} else {
+				b.args = append(b.args, args[i]+" "+args[i+1])
+			}
+		} else {
+			b.files = append(b.files, args[i])
+		}
+		i += inc
+	}
+	// Do the last argument
+	if i < len(args) {
+		_, isOpt := isOption(args[i], "")
+		if isOpt {
+			b.args = append(b.args, args[i])
+		} else {
+			b.files = append(b.files, args[i])
+		}
+	}
+
+	return b, nil
 }
