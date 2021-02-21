@@ -18,12 +18,23 @@ func main() {
 	args := os.Args[1:]
 
 	// parse arguments
+	build, err := parseArgs(args)
+	if err != nil {
+		log.Println("unable to parse arguments ", err)
+		// Don't know yet if we should fail or not.
+	}
 	// do stuff
+	log.Println("Program: ", build.program)
+	log.Println("Package: ", build.pkg)
+	log.Println("stdlib: ", build.stdlib)
+	log.Println("output: ", &build.output)
+	log.Println("args: ", build.args)
+	log.Println("files: ", build.files)
 	// finish
 
 	log.Println("incoming args", args)
 
-	err := execute(args)
+	err = execute(args)
 
 	if err != nil {
 		log.Println(err)

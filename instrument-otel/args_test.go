@@ -39,6 +39,9 @@ var argTests = []struct {
 		},
 		outBuild: &Build{
 			program: "C:\\Go\\pkg\\tool\\windows_amd64\\compile.exe",
+			pkg:     "internal/poll",
+			stdlib:  true,
+			output:  "$WORK\\b026\\_pkg_.a",
 			args: []string{
 				"-o $WORK\\b026\\_pkg_.a",
 				"-trimpath $WORK\\b026=>",
@@ -67,7 +70,60 @@ var argTests = []struct {
 			},
 		},
 	},
+	{
+		name: "fibmain",
+		inArgs: []string{
+			"C:\\Go\\pkg\\tool\\windows_amd64\\compile.exe",
+			"-o", "$WORK\\b001\\_pkg_.a",
+			"-trimpath", "$WORK\\b001=>",
+			"-p", "main",
+			"-complete",
+			"-buildid", "07gIkXLEJooNJ0O9y49j/07gIkXLEJooNJ0O9y49j",
+			"-goversion", "go1.14.2",
+			"-D", "_/D_/dev/go/src/github.com/skirmish/instrument/testdata/fibonacci",
+			"-importcfg", "$WORK\\b001\\importcfg",
+			"-pack",
+			"-c=4",
+			"testdata\\fibonacci\\main.go",
+		},
+		outBuild: &Build{
+			program: "C:\\Go\\pkg\\tool\\windows_amd64\\compile.exe",
+			output:  "$WORK\\b001\\_pkg_.a",
+			pkg:     "main",
+			args: []string{
+				"-o $WORK\\b001\\_pkg_.a",
+				"-trimpath $WORK\\b001=>",
+				"-p main",
+				"-complete",
+				"-buildid 07gIkXLEJooNJ0O9y49j/07gIkXLEJooNJ0O9y49j",
+				"-goversion go1.14.2",
+				"-D _/D_/dev/go/src/github.com/skirmish/instrument/testdata/fibonacci",
+				"-importcfg $WORK\\b001\\importcfg",
+				"-pack",
+				"-c=4",
+			},
+			files: []string{
+				"testdata\\fibonacci\\main.go",
+			},
+			stdlib: false,
+		},
+	},
 }
+
+//
+// Examples:
+//
+// C:\Go\pkg\tool\windows_amd64\compile.exe
+//		-o $WORK\b001\_pkg_.a
+//		-trimpath $WORK\b001=>
+//		-p main
+//		-complete
+//		-buildid ZhbgFFYdodKdwrtFK8AS/ZhbgFFYdodKdwrtFK8AS -goversion go1.14.2
+//		-D _/D_/dev/go/src/github.com/skirmish/instrument/testdata/hello
+//		-importcfg $WORK\b001\importcfg
+//		-pack
+//		-c=4
+//		testdata\hello\main.go
 
 func Test_Args1(t *testing.T) {
 	for _, tc := range argTests {
