@@ -12,3 +12,14 @@ on the right thing to do.
 
 The biggest change to the instrumented code is `context` will be added as the first parameter to any function
 invocation, if one doesn't exist. It should be able to co-exist with any `context` that already exists.
+
+## How
+
+In the post;
+<https://xdg.me/rewriting-go-with-ast-transformation/>
+The author gives an example.
+
+https://play.golang.org/p/-mS9Vglbdi
+
+
+

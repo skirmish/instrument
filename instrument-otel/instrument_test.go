@@ -2,16 +2,28 @@ package main
 
 import (
 	"bytes"
+	"fmt"
 	"go/ast"
+	"go/format"
 	"go/parser"
-	"go/printer"
 	"go/token"
+	"golang.org/x/tools/go/ast/astutil"
 	"io/ioutil"
 	"os"
 	"path/filepath"
 	"strings"
 	"testing"
 )
+
+func astPreFunc(cr *astutil.Cursor) bool {
+	fmt.Println("pre: ", cr.Name()) //, reflect.TypeOf(cr.Node()).Name())
+	return true
+}
+
+func astPostFunc(cr *astutil.Cursor) bool {
+	fmt.Println("post: ", cr.Name())
+	return true
+}
 
 // TestInstrumentation processes files in testdata/*.input
 // and compares them against the corresponding testdata/*.expected files.
@@ -55,9 +67,13 @@ func TestInstrumentation1(t *testing.T) {
 		t.Log(inAst.Name.Name)
 		ast.Print(fileSet, inAst)
 
+		// so now we have an AST, we can walk it
+		outAst := astutil.Apply(inAst, astPreFunc, nil)
+
 		// now turn the ast back into source
 		var buf bytes.Buffer
-		printer.Fprint(&buf, fileSet, inAst)
+		//printer.Fprint(&buf, fileSet, inAst)
+		err = format.Node(&buf, fileSet, outAst)
 
 		// and log
 		t.Log("Output file:\n", buf.String())
