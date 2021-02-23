@@ -15,8 +15,16 @@ import (
 	"testing"
 )
 
+var fileSet *token.FileSet = token.NewFileSet()
+
 func astPreFunc(cr *astutil.Cursor) bool {
 	fmt.Println("pre: ", cr.Name()) //, reflect.TypeOf(cr.Node()).Name())
+	var buf bytes.Buffer
+	// can we dump this? yes, we can
+	err := format.Node(&buf, fileSet, cr.Node())
+	if err == nil {
+		fmt.Println("Output file of node:\n", buf.String())
+	}
 	return true
 }
 
@@ -60,7 +68,7 @@ func TestInstrumentation1(t *testing.T) {
 		}
 
 		// ast it
-		var fileSet *token.FileSet = token.NewFileSet()
+
 		inAst, err := parser.ParseFile(fileSet, in, src, parser.ParseComments)
 
 		// log some info
